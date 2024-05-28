@@ -1,0 +1,21 @@
+.content {
+  display: flex;
+  }
+
+.image {
+  margin: 35px;
+}
+
+.text {
+  margin: 35px;
+}
+
+.meta{
+  display: flex;
+  justify-content: space-between;
+}
+
+.time {
+  font-size: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
