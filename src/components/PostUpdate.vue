@@ -65,22 +65,17 @@
         }
   
         axios.patch(`http://127.0.0.1:8000/api/posts/${this.id}/`, formData)
-          .then(response => {
-            console.log('Пост успішно оновлено:', response.data);
-            this.$router.push('/'); // Перенаправлення на головну сторінку після успішного оновлення
-          })
-          .catch(error => {
-            console.error('Помилка оновлення посту:', error);
-          });
-      },
-      cancelEdit() {
-        this.$router.push('/'); // Перенаправлення на головну сторінку при скасуванні редагування
-      }
+                .then(response => {
+                    console.log('Пост успішно оновлено:', response.data);
+                    this.$router.push(`/post/${this.id}`); // Перенаправлення на сторінку оновленого посту
+                })
+                .catch(error => {
+                    console.error('Помилка оновлення посту:', error);
+                });
+        },
+        cancelEdit() {
+            this.$router.push(`/post/${this.id}`); // Перенаправлення на сторінку оновленого посту при скасуванні редагування
+        }
     }
-  };
-  </script>
-  
-  <style scoped>
-  /* Додайте стилі за потребою */
-  </style>
-  
+};
+</script>
