@@ -4,6 +4,8 @@ import PostDetail from '../components/PostsDetail.vue';
 import PostAdd from '../components/PostAdd.vue';
 import PostUpdate from '../components/PostUpdate.vue';
 
+
+
 const routes = [
   {
     path: '/',

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="post.title">
+  <div :key="post.id" v-if="post.title">
     <h1>{{ post.title }}</h1>
     <div class="content">
       <div class="image" v-if="post.media">
@@ -47,25 +47,23 @@ export default {
     };
   },
   methods: {
-    fetchPost() {
-      axios.get(`http://127.0.0.1:8000/api/posts/${this.id}/`)
-        .then(response => {
-          this.post = response.data;
-        })
-        .catch(error => {
-          console.error('Помилка отримання даних:', error);
-        });
-     },
-     deletePost() {
-      axios.delete(`http://127.0.0.1:8000/api/posts/${this.id}/`)
-        .then(() => {
-          console.log('Пост видалено!');
-          // Опціонально, перенаправте користувача на іншу сторінку після видалення
-          this.$router.push('/'); // Перенаправлення на головну сторінку
-        })
-        .catch(error => {
-          console.error('Помилка видалення поста:', error);
-        });
+    async fetchPost() {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/posts/${this.id}/`);
+        this.post = response.data;
+      } catch (error) {
+        console.error('Помилка отримання даних:', error);
+      }
+    },
+    async deletePost() {
+      try {
+        await axios.delete(`http://127.0.0.1:8000/api/posts/${this.id}/`);
+        console.log('Пост видалено!');
+        // Опціонально, перенаправте користувача на іншу сторінку після видалення
+        this.$router.push('/'); // Перенаправлення на головну сторінку
+      } catch (error) {
+        console.error('Помилка видалення поста:', error);
+      }
     }
   },
   created() {

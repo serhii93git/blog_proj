@@ -17,6 +17,12 @@
   
   <script>
   export default {
+    props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
     data() {
       return {
         post: {
@@ -49,7 +55,8 @@
           }
           const data = await response.json();
           console.log('Post added successfully:', data);
-          this.$router.push('/'); // Перенаправлення на головну сторінку
+          this.$router.push({ name: 'PostDetail', params: { id: data.id }, query: { refresh: Date.now() } });
+
         } catch (error) {
           console.error('Error adding post:', error);
           // Обробка помилок, наприклад, показ помилки користувачеві
