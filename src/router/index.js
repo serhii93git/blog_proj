@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import PostsList from '../components/PostsList.vue'; 
-import PostDetail from '../components/PostsDetail.vue'; // Нова сторінка
+import PostDetail from '../components/PostsDetail.vue';
+import PostAdd from'../components/PostAdd.vue';
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     name: 'PostDetail',
     component: PostDetail,
     props:true
+  },
+  {
+    path: '/add',
+    name: 'PostAdd',
+    component: PostAdd
   }
 ];
 

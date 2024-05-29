@@ -32,7 +32,8 @@ export default {
     <div v-for="post in posts" :key="post.id">
       <h2 class="link">
         <router-link :to="`/post/${post.id}`">{{ post.title }}</router-link>
-      </h2>     
+      </h2>   
+         
     <div class="content">
       <div class="image">
         <img :src="post.media" style="max-width: 300px;" alt="Зображення">
