@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import PostsList from '../components/PostsList.vue'; 
 import PostDetail from '../components/PostsDetail.vue';
-import PostAdd from'../components/PostAdd.vue';
+import PostAdd from '../components/PostAdd.vue';
+import PostUpdate from '../components/PostUpdate.vue';
 
 const routes = [
   {
@@ -13,6 +14,12 @@ const routes = [
     path: '/post/:id',
     name: 'PostDetail',
     component: PostDetail,
+    props:true
+  },
+  {
+    path: '/update/:id',
+    name: 'PostUpdate',
+    component: PostUpdate,
     props:true
   },
   {

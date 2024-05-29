@@ -17,8 +17,12 @@
         <p>Time Created: {{ post.time_create }}</p>
         <p>Time Updated: {{ post.time_update }}</p>
       </div>
+      <router-link :to="`/update/${post.id}`">
+        <button>Редагувати</button>
+      </router-link>
     </div>
   </div>
+  
   <div v-else>
     <p>Loading post details...</p>
   </div>
