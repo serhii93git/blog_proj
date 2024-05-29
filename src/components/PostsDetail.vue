@@ -20,6 +20,8 @@
       <router-link :to="`/update/${post.id}`">
         <button>Редагувати</button>
       </router-link>
+      <button @click="deletePost">Видалити пост</button>
+      
     </div>
   </div>
   
@@ -53,7 +55,18 @@ export default {
         .catch(error => {
           console.error('Помилка отримання даних:', error);
         });
-     }
+     },
+     deletePost() {
+      axios.delete(`http://127.0.0.1:8000/api/posts/${this.id}/`)
+        .then(() => {
+          console.log('Пост видалено!');
+          // Опціонально, перенаправте користувача на іншу сторінку після видалення
+          this.$router.push('/'); // Перенаправлення на головну сторінку
+        })
+        .catch(error => {
+          console.error('Помилка видалення поста:', error);
+        });
+    }
   },
   created() {
     this.fetchPost();
