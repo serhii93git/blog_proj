@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link>
-      <br>
-      <router-link to="/post">Post Detail</router-link>
+      <router-link to="/">Main page</router-link>
     </nav>
     <router-view></router-view>
   </div>

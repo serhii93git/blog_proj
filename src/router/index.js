@@ -1,17 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../components/PostsList.vue'; 
-import NewPage from '../components/PostsDetail.vue'; // Нова сторінка
+import PostsList from '../components/PostsList.vue'; 
+import PostDetail from '../components/PostsDetail.vue'; // Нова сторінка
 
 const routes = [
   {
     path: '/',
-    name: 'PostsLiist',
-    component: Home
+    name: 'PostsList',
+    component: PostsList
   },
   {
-    path: '/post',
+    path: '/post/:id',
     name: 'PostDetail',
-    component: NewPage
+    component: PostDetail,
+    props:true
   }
 ];
 
