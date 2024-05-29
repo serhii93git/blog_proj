@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <itemList></itemList>
+  <div id="app">
+    <nav>
+      <router-link to="/">Home</router-link>
+      <br>
+      <router-link to="/post">Post Detail</router-link>
+    </nav>
+    <router-view></router-view>
   </div>
 </template>
 
-
 <script>
-import ItemList from './components/PostsList.vue';
-
 export default {
-  components: {
-    ItemList
-  }
-}
+  name: 'App'
+};
 </script>
