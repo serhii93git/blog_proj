@@ -2,7 +2,7 @@
   <div v-if="post.title">
     <h1>{{ post.title }}</h1>
     <div class="content">
-      <div class="image">
+      <div class="image" v-if="post.media">
         <img :src="post.media" style="max-width: 300px;" alt="Зображення">
       </div>
       <div class="text">
