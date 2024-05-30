@@ -1,4 +1,35 @@
-
+<template>
+  <div class="post">
+    <h1>Мій блог</h1>
+    <div v-for="post in posts" :key="post.id">
+      <h2 class="link">
+        <router-link :to="`/post/${post.id}`">{{ post.title }}</router-link>
+      </h2>   
+         
+      <div class="content">
+        <div class="image" v-if="post.media">
+          <img :src="post.media" style="max-width: 300px;" alt="Зображення">
+        </div>
+        <div class="text">
+          <p>{{ getTruncatedText(post) }}</p>
+          <button v-if="showReadMoreButton(post)" @click="toggleExpand(post)">
+            {{ getButtonText(post) }}
+          </button>
+        </div>
+      </div>
+      <div class="meta">
+        <div class="author">
+          <p>Author: <em>{{ post.author }}</em></p>
+        </div>
+        <div class="time">
+          <p>time create: {{ post.time_create }}</p>
+          <p>time update: {{ post.time_update }}</p>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
+</template>
 
 <script>
 import axios from 'axios';
@@ -6,7 +37,8 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      posts: []
+      posts: [],
+      limit: 500
     };
   },
   mounted() {
@@ -17,46 +49,34 @@ export default {
       axios.get('http://127.0.0.1:8000/api/posts/')
         .then(response => {
           this.posts = response.data;
+          // Додаємо isExpanded до кожного посту
+          this.posts.forEach(post => {
+            this.$set(post, 'isExpanded', false);
+          });
         })
         .catch(error => {
           console.error('Помилка отримання даних:', error);
         });
+    },
+    toggleExpand(post) {
+      post.isExpanded = !post.isExpanded;
+    },
+    getTruncatedText(post) {
+      if (post.isExpanded || !post.text) {
+        return post.text;
+      }
+      return post.text.length > this.limit
+        ? post.text.substring(0, this.limit) + '...'
+        : post.text;
+    },
+    showReadMoreButton(post) {
+      return post.text && post.text.length > this.limit;
+    },
+    getButtonText(post) {
+      return post.isExpanded ? 'Згорнути' : 'Читати далі';
     }
   }
 }
 </script>
-
-<template>
-  <div class="post">
-    <h1>Мій блог</h1>
-    <div v-for="post in posts" :key="post.id">
-      <h2 class="link">
-        <router-link :to="`/post/${post.id}`">{{ post.title }}</router-link>
-      </h2>   
-         
-    <div class="content">
-      <div class="image" v-if="post.media">
-        <img :src="post.media" style="max-width: 300px;" alt="Зображення">
-      </div>
-      <div class="text">
-        <p>text post: {{ post.text }}</p>
-      </div>
-      
-    </div>
-    <div class="meta">
-      <div class="author">
-        <p>Author: <em>{{ post.author }}</em></p>
-      </div>
-      
-      <div class="time">
-        <p>time create: {{ post.time_create }}</p>
-        <p>time update: {{ post.time_update }}</p>
-      </div>
-    </div>
-      <hr>
-
-    </div>
-  </div>
-</template>
 
 <style src="../style/PostList.css"></style>
