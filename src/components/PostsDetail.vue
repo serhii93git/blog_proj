@@ -21,7 +21,6 @@
         <button>Редагувати</button>
       </router-link>
       <button @click="deletePost">Видалити пост</button>
-      
     </div>
   </div>
   
@@ -31,7 +30,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { reactive, onMounted } from 'vue';
+import axios from '@/axios';
 
 export default {
   name: 'PostDetail',
@@ -41,33 +41,34 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      post: {}
-    };
-  },
-  methods: {
-    async fetchPost() {
+  setup(props, { emit }) {
+    const post = reactive({});
+
+    const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/posts/${this.id}/`);
-        this.post = response.data;
+        const response = await axios.get(`posts/${props.id}/`);
+        Object.assign(post, response.data);
       } catch (error) {
         console.error('Помилка отримання даних:', error);
       }
-    },
-    async deletePost() {
+    };
+
+    const deletePost = async () => {
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/posts/${this.id}/`);
+        await axios.delete(`posts/${props.id}/`);
         console.log('Пост видалено!');
-        
-        this.$router.push('/'); // Перенаправлення на головну сторінку
+        emit('postDeleted'); // Випромінювання події для батьківського компонента
       } catch (error) {
         console.error('Помилка видалення поста:', error);
       }
-    }
-  },
-  created() {
-    this.fetchPost();
+    };
+
+    onMounted(fetchPost);
+
+    return {
+      post,
+      deletePost
+    };
   }
 };
 </script>

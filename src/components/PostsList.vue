@@ -33,50 +33,61 @@
 
 <script>
 import axios from 'axios';
+import { reactive, toRefs } from 'vue';
 
 export default {
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       posts: [],
       limit: 500
-    };
-  },
-  mounted() {
-    this.fetchPosts();
-  },
-  methods: {
-    fetchPosts() {
+    });
+
+    const fetchPosts = () => {
       axios.get('http://127.0.0.1:8000/api/posts/')
         .then(response => {
-          this.posts = response.data;
-          // Додаємо isExpanded до кожного посту
-          this.posts.forEach(post => {
-            this.$set(post, 'isExpanded', false);
-          });
+          state.posts = response.data.map(post => ({
+            ...post,
+            isExpanded: false
+          }));
         })
         .catch(error => {
           console.error('Помилка отримання даних:', error);
         });
-    },
-    toggleExpand(post) {
+    };
+
+    const toggleExpand = (post) => {
       post.isExpanded = !post.isExpanded;
-    },
-    getTruncatedText(post) {
+    };
+
+    const getTruncatedText = (post) => {
       if (post.isExpanded || !post.text) {
         return post.text;
       }
-      return post.text.length > this.limit
-        ? post.text.substring(0, this.limit) + '...'
+      return post.text.length > state.limit
+        ? post.text.substring(0, state.limit) + '...'
         : post.text;
-    },
-    showReadMoreButton(post) {
-      return post.text && post.text.length > this.limit;
-    },
-    getButtonText(post) {
+    };
+
+    const showReadMoreButton = (post) => {
+      return post.text && post.text.length > state.limit;
+    };
+
+    const getButtonText = (post) => {
       return post.isExpanded ? 'Згорнути' : 'Читати далі';
-    }
+    };
+
+    fetchPosts();
+
+    return {
+      ...toRefs(state),
+      fetchPosts,
+      toggleExpand,
+      getTruncatedText,
+      showReadMoreButton,
+      getButtonText
+    };
   }
-}
+};
 </script>
 
 <style src="../style/PostList.css"></style>
