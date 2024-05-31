@@ -2,8 +2,13 @@
   <div v-if="post.title">
     <h1>{{ post.title }}</h1>
     <div class="content">
-      <div class="image" v-if="post.media">
-        <img :src="post.media" style="max-width: 300px;" alt="Зображення">
+      <div class="media" v-if="post.media">
+        <template v-if="isImage(post.media)">
+          <img :src="post.media" style="max-width: 300px;" alt="Зображення">
+        </template>
+        <template v-else-if="isVideo(post.media)">
+          <video :src="post.media" style="max-width: 300px;" controls></video>
+        </template>
       </div>
       <div class="text">
         <p>{{ post.text }}</p>
@@ -11,11 +16,11 @@
     </div>
     <div class="meta">
       <div class="author">
-        <p>Author: <em>{{ post.author }}</em></p>
+        <p>Автор: <em>{{ post.author }}</em></p>
       </div>
       <div class="time">
-        <p>Time Created: {{ post.time_create }}</p>
-        <p>Time Updated: {{ post.time_update }}</p>
+        <p>Час створення: {{ post.time_create }}</p>
+        <p>Час оновлення: {{ post.time_update }}</p>
       </div>
       <router-link :to="`/update/${post.id}`">
         <button>Редагувати</button>
@@ -25,7 +30,7 @@
   </div>
   
   <div v-else>
-    <p>Loading post details...</p>
+    <p>Завантаження деталей поста...</p>
   </div>
 </template>
 
@@ -39,7 +44,7 @@ export default {
     id: {
       type: String,
       required: true
-    }
+    },
   },
   setup(props, { emit }) {
     const post = reactive({});
@@ -57,7 +62,8 @@ export default {
       try {
         await axios.delete(`posts/${props.id}/`);
         console.log('Пост видалено!');
-        emit('postDeleted'); // Випромінювання події для батьківського компонента
+        emit('postDeleted');
+        this.$router.push('/'); // Випромінювання події для батьківського компонента
       } catch (error) {
         console.error('Помилка видалення поста:', error);
       }
@@ -65,9 +71,19 @@ export default {
 
     onMounted(fetchPost);
 
+    const isImage = (media) => {
+      return /\.(jpeg|jpg|gif|png|webp)$/i.test(media);
+    };
+
+    const isVideo = (media) => {
+      return /\.(mp4|webm|ogg)$/i.test(media);
+    };
+
     return {
       post,
-      deletePost
+      deletePost,
+      isImage,
+      isVideo
     };
   }
 };
