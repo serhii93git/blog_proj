@@ -8,8 +8,7 @@
       <textarea id="text" v-model="post.text" required></textarea>
       <label for="media">Медіафайл:</label>
       <input type="file" id="media" @change="handleFileChange" accept="image/*">
-      <label for="author">Автор:</label>
-      <input type="text" id="author" v-model="post.author" required>
+      
       <button type="submit">Додати пост</button>
     </form>
   </div>
@@ -33,7 +32,7 @@ export default {
       title: '',
       text: '',
       media: null,
-      author: ''
+      author: '1'
     });
 
     const handleFileChange = (event) => {
