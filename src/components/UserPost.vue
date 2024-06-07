@@ -6,7 +6,7 @@
       <li v-for="post in user.posts" :key="post.id">
         <h2>{{ post.title }}</h2>
         <p>{{ post.text }}</p>
-        <img :src="post.media" alt="Post Media" />
+        <img :src="mediaUrl(post.media)" alt="Post Media" />
         <p>Created at: {{ new Date(post.time_create).toLocaleString() }}</p>
         <p>Updated at: {{ new Date(post.time_update).toLocaleString() }}</p>
       </li>
@@ -46,11 +46,10 @@ export default {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+    },
+    mediaUrl(media) {
+      return `http://localhost:8000${media}`;
     }
   }
 };
 </script>
-
-<style scoped>
-/* Додайте ваші стилі тут */
-</style>
