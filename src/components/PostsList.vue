@@ -1,6 +1,12 @@
 <template>
   <div class="post">
-    <h1>Мій блог</h1>
+    <h1>У - умігрант, або записки з закордоння</h1>
+    <h3>
+      <em>"Скажи мені що ти вважаєш проблемою - 
+        і я скажу як сильно ти щасливий.."</em>
+    </h3>
+    <h4>Розповіді про те, що і як зі мною відбувалось закордоном 
+      з домішками сухих фактів, власних емоцій та мрікувань</h4>
     <div v-for="post in posts" :key="post.id">
       <h2 class="link">
         <router-link :to="`/post/${post.id}`">{{ post.title }}</router-link>
@@ -19,12 +25,13 @@
       </div>
       <div class="meta">
         <div class="author">
-          <p>Author: <em>{{ post.author }}</em></p>
+          <p>Автор <em>{{ post.author }}</em></p>
         </div>
         <div class="time">
-          <p>time create: {{ post.time_create }}</p>
-          <p>time update: {{ post.time_update }}</p>
+          <p>Створено {{ new Date(post.time_create).toLocaleString('en-US', { hour12: false }) }}</p>
+          <p v-if="post.time_create !== post.time_update">Редаговано {{ new Date(post.time_update).toLocaleString('en-US', { hour12: false }) }}</p>
         </div>
+
       </div>
       <hr>
     </div>
