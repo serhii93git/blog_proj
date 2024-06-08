@@ -32,7 +32,7 @@ export default {
       title: '',
       text: '',
       media: null,
-      author: '1'
+      
     });
 
     const handleFileChange = (event) => {
@@ -43,7 +43,7 @@ export default {
       const formData = new FormData();
       formData.append('title', post.value.title);
       formData.append('text', post.value.text);
-      formData.append('author', post.value.author);
+      
 
       if (post.value.media) {
         formData.append('media', post.value.media);
