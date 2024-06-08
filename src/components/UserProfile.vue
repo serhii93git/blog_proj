@@ -31,7 +31,7 @@
     methods: {
       async fetchUserData() {
         try {
-          const response = await axios.get('http://127.0.0.1:8000/api/creator/');
+          const response = await axios.get('http://3.95.246.201:8000/api/creator/');
           console.log(response.data); // Логування для перевірки даних
           if (Array.isArray(response.data) && response.data.length > 0) {
             this.user = response.data[0];

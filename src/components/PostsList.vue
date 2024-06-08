@@ -50,7 +50,7 @@ export default {
     });
 
     const fetchPosts = () => {
-      axios.get('http://127.0.0.1:8000/api/posts/')
+      axios.get('http://3.95.246.201:8000/api/posts/')
         .then(response => {
           state.posts = response.data.map(post => ({
             ...post,
