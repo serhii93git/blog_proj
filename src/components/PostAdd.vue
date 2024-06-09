@@ -5,7 +5,7 @@
       <label for="title">Заголовок:</label>
       <input type="text" id="title" v-model="post.title" required class="input-field">
       <label for="text">Текст:</label>
-      <textarea id="text" v-model="post.text" required :rows="calculateTextareaRows(post.text)" class="input-field textarea-field"></textarea>
+      <div ref="editorContainer" class="editor-container"></div>
       <label for="media">Медіафайл:</label>
       <input type="file" id="media" @change="handleFileChange" accept="image/*" class="input-field">
       
@@ -15,8 +15,10 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 import axios from '@/axios';
 
 export default {
@@ -33,6 +35,8 @@ export default {
       text: '',
       media: null,
     });
+    const editorContainer = ref(null);
+    let quillEditor;
 
     const handleFileChange = (event) => {
       post.value.media = event.target.files[0];
@@ -41,7 +45,7 @@ export default {
     const addPost = async () => {
       const formData = new FormData();
       formData.append('title', post.value.title);
-      formData.append('text', post.value.text);
+      formData.append('text', quillEditor.root.innerHTML);
 
       if (post.value.media) {
         formData.append('media', post.value.media);
@@ -61,16 +65,25 @@ export default {
       }
     };
 
-    const calculateTextareaRows = (text) => {
-      // Вираховуємо кількість рядків на основі довжини тексту
-      return Math.min(Math.ceil(text.length / 100), 50); // Максимум 50 рядків або 5 тисяч символів
-    };
+    onMounted(() => {
+      quillEditor = new Quill(editorContainer.value, {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline'],
+            ['link', 'image'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }]
+          ]
+        }
+      });
+    });
 
     return {
       post,
       handleFileChange,
       addPost,
-      calculateTextareaRows
+      editorContainer
     };
   }
 };
@@ -107,5 +120,11 @@ export default {
 
 .submit-button:hover {
   background-color: #0056b3;
+}
+
+.editor-container {
+  height: 200px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
 }
 </style>
