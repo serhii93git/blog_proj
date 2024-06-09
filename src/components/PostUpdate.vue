@@ -4,20 +4,27 @@
     <form @submit.prevent="updatePost" class="edit-post-form">
       <label for="title">Заголовок:</label>
       <input type="text" id="title" v-model="post.title" required class="input-field">
+      
       <label for="text">Текст:</label>
-      <textarea id="text" v-model="post.text" required class="input-field"></textarea>
+      <div ref="editorContainer" class="editor-container"></div>
+      
       <label for="media">Медіафайл:</label>
       <input type="file" id="media" @change="handleFileChange" accept="image/*" class="input-field">
+      
       <label for="author">Автор:</label>
       <input type="text" id="author" v-model="post.author" required class="input-field">
+      
       <button type="submit" class="submit-button">Оновити пост</button>
       <button @click="cancelEdit" class="cancel-button">Скасувати</button>
     </form>
   </div>
 </template>
 
+
 <script>
 import axios from 'axios';
+import { Quill } from 'quill';
+import 'quill/dist/quill.snow.css';
 
 export default {
   data() {
@@ -39,6 +46,7 @@ export default {
   },
   mounted() {
     this.fetchPost();
+    this.initializeQuillEditor();
   },
   methods: {
     fetchPost() {
@@ -46,6 +54,7 @@ export default {
         .then(response => {
           this.post = response.data;
           this.originalPost = { ...response.data }; // зберігаємо оригінальні дані для перевірки змін
+          this.quill.root.innerHTML = this.post.text; // Завантажуємо текст у редактор
         })
         .catch(error => {
           console.error('Помилка отримання посту:', error);
@@ -54,10 +63,24 @@ export default {
     handleFileChange(event) {
       this.post.media = event.target.files[0];
     },
+    initializeQuillEditor() {
+      this.quill = new Quill(this.$refs.editorContainer, {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['bold', 'italic', 'underline'],
+            [{ 'align': [] }],
+            ['link', 'image']
+          ]
+        },
+      });
+    },
     updatePost() {
       const formData = new FormData();
       formData.append('title', this.post.title);
-      formData.append('text', this.post.text);
+      formData.append('text', this.quill.root.innerHTML); // Оновлюємо текст з Quill редактора
       formData.append('author', this.post.author);
 
       if (this.post.media && (this.originalPost === null || this.post.media !== this.originalPost.media)) {
@@ -80,6 +103,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .edit-post-form {
   max-width: 600px;
@@ -94,8 +118,9 @@ export default {
   border-radius: 5px;
 }
 
-.textarea-field {
+.editor-container {
   height: 200px;
+  margin-bottom: 15px;
 }
 
 .submit-button {
@@ -127,3 +152,4 @@ export default {
   background-color: #5a6268;
 }
 </style>
+
