@@ -19,8 +19,8 @@
         <p>Автор: <em>{{ post.author }}</em></p>
       </div>
       <div class="time">
-        <p>Час створення: {{ post.time_create }}</p>
-        <p>Час оновлення: {{ post.time_update }}</p>
+        <p>Час створення: {{ new Date(post.time_create).toLocaleString() }}</p>
+        <p>Час оновлення: {{ new Date(post.time_update).toLocaleString() }}</p>
       </div>
       <router-link :to="`/update/${post.id}`">
         <button>Редагувати</button>
@@ -90,5 +90,63 @@ export default {
 </script>
 
 <style scoped>
-/* Додайте ваші стилі тут */
+.user-posts {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.creator-image {
+  max-width: 200px;
+  margin-bottom: 20px;
+}
+
+.post-item {
+  margin-bottom: 40px;
+}
+
+.post-media {
+  max-width: 300px;
+  margin-bottom: 10px;
+}
+
+.post-time {
+  font-style: italic;
+  color: #777;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  flex: 1;
+}
+
+.image, .media {
+  margin-right: 20px;
+}
+
+.text p {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.meta {
+  margin-top: 20px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
 </style>
