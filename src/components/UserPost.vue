@@ -37,7 +37,7 @@ export default {
   methods: {
     async fetchUserData() {
       try {
-        const response = await axios.get('http://3.95.246.201:8000/api/creator/');
+        const response = await axios.get('http://34.228.31.75:8000/api/creator/');
         console.log(response.data); // Логування для перевірки даних
         // Оскільки response.data є масивом користувачів, беремо першого
         if (Array.isArray(response.data) && response.data.length > 0) {

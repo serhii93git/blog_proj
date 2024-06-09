@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     fetchPost() {
-      axios.get(`http://3.95.246.201:8000/api/posts/${this.id}/`)
+      axios.get(`http://34.228.31.75:8000/api/posts/${this.id}/`)
         .then(response => {
           this.post = response.data;
           this.originalPost = { ...response.data }; // зберігаємо оригінальні дані для перевірки змін
@@ -64,7 +64,7 @@ export default {
         formData.append('media', this.post.media);
       }
 
-      axios.patch(`http://3.95.246.201:8000/api/posts/${this.id}/`, formData)
+      axios.patch(`http://34.228.31.75:8000/api/posts/${this.id}/`, formData)
         .then(response => {
           console.log('Пост успішно оновлено:', response.data);
           this.$router.push(`/post/${this.id}`); // Перенаправлення на сторінку оновленого посту
