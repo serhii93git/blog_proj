@@ -1,5 +1,5 @@
 <template>
-  <div v-if="post.title" class="post-detail">
+  <div v-if="post.title">
     <h1>{{ post.title }}</h1>
     <div class="content">
       <div class="media" v-if="post.media">
@@ -11,7 +11,7 @@
         </template>
       </div>
       <div class="text">
-        <p>{{ post.text }}</p>
+        <div v-html="post.text"></div>
       </div>
     </div>
     <div class="meta">
@@ -69,6 +69,8 @@ export default {
       }
     };
 
+    onMounted(fetchPost);
+
     const isImage = (media) => {
       return /\.(jpeg|jpg|gif|png|webp)$/i.test(media);
     };
@@ -76,8 +78,6 @@ export default {
     const isVideo = (media) => {
       return /\.(mp4|webm|ogg)$/i.test(media);
     };
-
-    onMounted(fetchPost);
 
     return {
       post,
@@ -90,74 +90,5 @@ export default {
 </script>
 
 <style scoped>
-.post-detail {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.post-detail h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
-  text-align: center;
-  color: #333;
-}
-
-.post-detail .content {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.post-detail .media {
-  margin-right: 30px;
-}
-
-.post-detail .media img {
-  max-width: 100%;
-  border-radius: 10px;
-}
-
-.post-detail .media video {
-  max-width: 100%;
-  border-radius: 10px;
-}
-
-.post-detail .text {
-  flex: 1;
-}
-
-.post-detail .meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.post-detail .author {
-  font-style: italic;
-}
-
-.post-detail .time {
-  font-size: 14px;
-}
-
-.post-detail button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.post-detail button:hover {
-  background-color: #0056b3;
-}
+/* Додайте ваші стилі тут */
 </style>

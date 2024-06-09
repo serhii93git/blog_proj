@@ -17,7 +17,7 @@
           <img :src="post.media" style="max-width: 300px;" alt="Зображення">
         </div>
         <div class="text">
-          <p>{{ getTruncatedText(post) }}</p>
+          <div v-html="getTruncatedText(post)"></div>
           <button v-if="showReadMoreButton(post)" @click="toggleExpand(post)">
             {{ getButtonText(post) }}
           </button>
@@ -31,7 +31,6 @@
           <p>Створено {{ new Date(post.time_create).toLocaleString('en-US', { hour12: false }) }}</p>
           <p v-if="post.time_create !== post.time_update">Редаговано {{ new Date(post.time_update).toLocaleString('en-US', { hour12: false }) }}</p>
         </div>
-
       </div>
       <hr>
     </div>
@@ -97,4 +96,47 @@ export default {
 };
 </script>
 
-<style src="../style/PostList.css"></style>
+<style scoped>
+.post {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1, h2, h3, h4 {
+  color: #333;
+}
+
+.link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
+
+.content {
+  margin: 20px 0;
+}
+
+.image img {
+  display: block;
+  margin: 10px 0;
+}
+
+.text {
+  margin: 10px 0;
+}
+
+.meta {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #777;
+}
+
+hr {
+  margin: 20px 0;
+}
+</style>
