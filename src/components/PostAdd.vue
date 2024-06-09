@@ -1,15 +1,15 @@
 <template>
   <div>
     <h2>Додати новий пост</h2>
-    <form @submit.prevent="addPost">
+    <form @submit.prevent="addPost" class="add-post-form">
       <label for="title">Заголовок:</label>
-      <input type="text" id="title" v-model="post.title" required>
+      <input type="text" id="title" v-model="post.title" required class="input-field">
       <label for="text">Текст:</label>
-      <textarea id="text" v-model="post.text" required></textarea>
+      <textarea id="text" v-model="post.text" required :rows="calculateTextareaRows(post.text)" class="input-field textarea-field"></textarea>
       <label for="media">Медіафайл:</label>
-      <input type="file" id="media" @change="handleFileChange" accept="image/*">
+      <input type="file" id="media" @change="handleFileChange" accept="image/*" class="input-field">
       
-      <button type="submit">Додати пост</button>
+      <button type="submit" class="submit-button">Додати пост</button>
     </form>
   </div>
 </template>
@@ -32,7 +32,6 @@ export default {
       title: '',
       text: '',
       media: null,
-      
     });
 
     const handleFileChange = (event) => {
@@ -43,7 +42,6 @@ export default {
       const formData = new FormData();
       formData.append('title', post.value.title);
       formData.append('text', post.value.text);
-      
 
       if (post.value.media) {
         formData.append('media', post.value.media);
@@ -63,11 +61,51 @@ export default {
       }
     };
 
+    const calculateTextareaRows = (text) => {
+      // Вираховуємо кількість рядків на основі довжини тексту
+      return Math.min(Math.ceil(text.length / 100), 50); // Максимум 50 рядків або 5 тисяч символів
+    };
+
     return {
       post,
       handleFileChange,
-      addPost
+      addPost,
+      calculateTextareaRows
     };
   }
 };
 </script>
+
+<style scoped>
+.add-post-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.textarea-field {
+  height: auto; /* Забезпечує автоматичне розширення текстового поля */
+  min-height: 100px; /* Мінімальна висота текстового поля */
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+</style>
