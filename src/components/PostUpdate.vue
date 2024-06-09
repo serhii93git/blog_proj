@@ -21,10 +21,11 @@
 </template>
 
 
+
 <script>
-import axios from 'axios';
-import { Quill } from 'quill';
+import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
+import axios from 'axios';
 
 export default {
   data() {
@@ -49,16 +50,15 @@ export default {
     this.initializeQuillEditor();
   },
   methods: {
-    fetchPost() {
-      axios.get(`http://34.228.31.75:8000/api/posts/${this.id}/`)
-        .then(response => {
-          this.post = response.data;
-          this.originalPost = { ...response.data }; // зберігаємо оригінальні дані для перевірки змін
-          this.quill.root.innerHTML = this.post.text; // Завантажуємо текст у редактор
-        })
-        .catch(error => {
-          console.error('Помилка отримання посту:', error);
-        });
+    async fetchPost() {
+      try {
+        const response = await axios.get(`http://34.228.31.75:8000/api/posts/${this.id}/`);
+        this.post = response.data;
+        this.originalPost = { ...response.data }; // зберігаємо оригінальні дані для перевірки змін
+        this.quill.root.innerHTML = this.post.text; // Завантажуємо текст у редактор
+      } catch (error) {
+        console.error('Помилка отримання посту:', error);
+      }
     },
     handleFileChange(event) {
       this.post.media = event.target.files[0];
@@ -74,10 +74,10 @@ export default {
             [{ 'align': [] }],
             ['link', 'image']
           ]
-        },
+        }
       });
     },
-    updatePost() {
+    async updatePost() {
       const formData = new FormData();
       formData.append('title', this.post.title);
       formData.append('text', this.quill.root.innerHTML); // Оновлюємо текст з Quill редактора
@@ -87,14 +87,13 @@ export default {
         formData.append('media', this.post.media);
       }
 
-      axios.patch(`http://34.228.31.75:8000/api/posts/${this.id}/`, formData)
-        .then(response => {
-          console.log('Пост успішно оновлено:', response.data);
-          this.$router.push(`/post/${this.id}`); // Перенаправлення на сторінку оновленого посту
-        })
-        .catch(error => {
-          console.error('Помилка оновлення посту:', error);
-        });
+      try {
+        const response = await axios.patch(`http://34.228.31.75:8000/api/posts/${this.id}/`, formData);
+        console.log('Пост успішно оновлено:', response.data);
+        this.$router.push(`/post/${this.id}`); // Перенаправлення на сторінку оновленого посту
+      } catch (error) {
+        console.error('Помилка оновлення посту:', error);
+      }
     },
     cancelEdit() {
       this.$router.push(`/post/${this.id}`); // Перенаправлення на сторінку оновленого посту при скасуванні редагування
@@ -102,6 +101,7 @@ export default {
   }
 };
 </script>
+
 
 
 <style scoped>
