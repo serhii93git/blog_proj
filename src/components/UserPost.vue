@@ -5,10 +5,10 @@
     <ul>
       <li v-for="post in user.posts" :key="post.id" class="post-item">
         <h2>{{ post.title }}</h2>
-        <p>{{ post.text }}</p>
-        <img :src="mediaUrl(post.media)" alt="Post Media" class="post-media" />
+        <div v-html="post.text"></div>
+        <img v-if="post.media" :src="mediaUrl(post.media)" alt="Post Media" class="post-media" />
         <p class="post-time">Created at: {{ new Date(post.time_create).toLocaleString() }}</p>
-        <p class="post-time">Updated at: {{ new Date(post.time_update).toLocaleString() }}</p>
+        <p class="post-time" v-if="post.time_create !== post.time_update">Updated at: {{ new Date(post.time_update).toLocaleString() }}</p>
       </li>
     </ul>
   </div>
