@@ -22,9 +22,11 @@
         <p>Час створення: {{ new Date(post.time_create).toLocaleString() }}</p>
         <p>Час оновлення: {{ new Date(post.time_update).toLocaleString() }}</p>
       </div>
+      <div>
       <router-link :to="`/update/${post.id}`">
         <button>Редагувати</button>
       </router-link>
+      </div>
       <button @click="deletePost">Видалити пост</button>
     </div>
   </div>
@@ -63,7 +65,7 @@ export default {
         await axios.delete(`posts/${props.id}/`);
         console.log('Пост видалено!');
         emit('postDeleted');
-        this.$router.push('/'); // Випромінювання події для батьківського компонента
+        this.$router.push('/'); 
       } catch (error) {
         console.error('Помилка видалення поста:', error);
       }
