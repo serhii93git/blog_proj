@@ -6,6 +6,7 @@
       <router-link :to="`/profile/`">Author Profile</router-link>
       <router-link :to="`/upost/`">Author Posts</router-link>
       <router-link :to="`/login/`">Login</router-link>
+      <router-link :to="`/register/`">Register</router-link>
     </nav>
     <router-view></router-view>
   </div>

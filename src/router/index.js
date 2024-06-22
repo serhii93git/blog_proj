@@ -5,7 +5,8 @@ import PostAdd from '../components/PostAdd.vue';
 import PostUpdate from '../components/PostUpdate.vue';
 import UserLogin from '../components/UserLogin.vue';
 import UserProfile from '../components/UserProfile.vue';
-import UserPost from '../components/UserPost.vue'
+import UserPost from '../components/UserPost.vue';
+import UserRegister from '../components/UserRegister';
 
 
 
@@ -46,6 +47,11 @@ const routes = [
     path: '/upost',
     name: 'UserPost',
     component: UserPost
+  },
+  {
+    path: '/register',
+    name: 'UserRegister',
+    component: UserRegister
   },
 ];
 
