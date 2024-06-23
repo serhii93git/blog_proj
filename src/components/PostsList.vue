@@ -8,8 +8,8 @@
     <h4>Розповіді про те, що і як зі мною відбувалось закордоном 
       з домішками сухих фактів, власних емоцій та мрікувань</h4>
     <div v-for="post in posts" :key="post.id">
-      <h2 class="link">
-        <router-link :to="`/post/${post.id}`">{{ post.title }}</router-link>
+      <h2>
+        {{ post.title }}
       </h2>   
          
       <div class="content">
