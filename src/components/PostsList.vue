@@ -1,5 +1,5 @@
 <template>
-  <div class="post">
+  <div>
     <h1>Привіт</h1>
     <h3>Це мій перший блог створений на django rest framework та Vue.js</h3>
     <h6>
@@ -13,14 +13,14 @@
 
     </h6>
     
-    <div v-for="post in posts" :key="post.id">
+    <div class="user-posts" v-for="post in posts" :key="post.id">
       <h2>
         {{ post.title }}
       </h2>   
          
       <div class="content">
         <div class="image" v-if="post.media">
-          <img :src="post.media" style="max-width: 300px;" alt="Зображення">
+          <img :src="post.media" class="post-media" alt="Зображення">
         </div>
         <div class="text">
           <div v-html="getTruncatedText(post)"></div>
@@ -33,7 +33,7 @@
         <div class="author">
           <p>Автор <em>{{ post.author }}</em></p>
         </div>
-        <div class="time">
+        <div class="post-time">
           <p>Створено {{ new Date(post.time_create).toLocaleString('en-US', { hour12: false }) }}</p>
           <p v-if="post.time_create !== post.time_update">Редаговано {{ new Date(post.time_update).toLocaleString('en-US', { hour12: false }) }}</p>
         </div>
@@ -46,6 +46,7 @@
 <script>
 import axios from 'axios';
 import { reactive, toRefs } from 'vue';
+import '../style/PostList.css'
 
 export default {
   setup() {
@@ -102,47 +103,5 @@ export default {
 };
 </script>
 
-<style scoped>
-.post {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-h1, h2, h3, h4 {
-  color: #333;
-}
-
-.link a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.link a:hover {
-  text-decoration: underline;
-}
-
-.content {
-  margin: 20px 0;
-}
-
-.image img {
-  display: block;
-  margin: 10px 0;
-}
-
-.text {
-  margin: 10px 0;
-}
-
-.meta {
-  margin-top: 20px;
-  font-size: 0.9em;
-  color: #777;
-}
-
-hr {
-  margin: 20px 0;
-}
+<style>
 </style>
