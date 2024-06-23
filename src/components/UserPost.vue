@@ -4,8 +4,18 @@
     <img v-if="user.creator_image" :src="user.creator_image" alt="Creator Image" class="creator-image" />
     <ul>
       <li v-for="post in user.posts" :key="post.id" class="post-item">
-        <h2>{{ post.title }}</h2>
-        <div v-html="post.text"></div>
+        
+        <h2>
+          <router-link :to="`/post/${post.id}`">
+          {{ post.title }}
+          </router-link>
+        </h2>
+        <div class="text">
+          <div v-html="getTruncatedText(post)"></div>
+          <button v-if="showReadMoreButton(post)" @click="toggleExpand(post)">
+            {{ getButtonText(post) }}
+          </button>
+        </div>
         <img v-if="post.media" :src="mediaUrl(post.media)" alt="Post Media" class="post-media" />
         <p class="post-time">Created at: {{ new Date(post.time_create).toLocaleString() }}</p>
         <p class="post-time" v-if="post.time_create !== post.time_update">Updated at: {{ new Date(post.time_update).toLocaleString() }}</p>
@@ -16,8 +26,10 @@
 
 <script>
 import axios from 'axios';
+import { reactive, toRefs } from 'vue';
 
 export default {
+  
   data() {
     return {
       user: {
@@ -29,6 +41,40 @@ export default {
         creator_image: '',
         posts: []
       }
+    };
+  },
+  setup() {
+    const state = reactive({
+      posts: [],
+      limit: 500
+    });
+    const toggleExpand = (post) => {
+      post.isExpanded = !post.isExpanded;
+    };
+
+    const getTruncatedText = (post) => {
+      if (post.isExpanded || !post.text) {
+        return post.text;
+      }
+      return post.text.length > state.limit
+        ? post.text.substring(0, state.limit) + '...'
+        : post.text;
+    };
+
+    const showReadMoreButton = (post) => {
+      return post.text && post.text.length > state.limit;
+    };
+
+    const getButtonText = (post) => {
+      return post.isExpanded ? 'Згорнути' : 'Читати далі';
+    };
+    return {
+      ...toRefs(state),
+      
+      toggleExpand,
+      getTruncatedText,
+      showReadMoreButton,
+      getButtonText
     };
   },
   mounted() {
