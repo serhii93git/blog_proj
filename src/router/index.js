@@ -7,6 +7,7 @@ import UserLogin from '../components/UserLogin.vue';
 import UserProfile from '../components/UserProfile.vue';
 import UserPost from '../components/UserPost.vue';
 import UserRegister from '../components/UserRegister';
+import UserProfileEdit from '../components/UserProfileEdit.vue';
 
 
 
@@ -42,6 +43,12 @@ const routes = [
     path: '/profile',
     name: 'UserProfile',
     component: UserProfile
+  },
+  {
+    path: '/edit/:id',
+    name: 'UserProfileEdit',
+    component: UserProfileEdit,
+    props: true
   },
   {
     path: '/upost',

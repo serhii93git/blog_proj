@@ -7,6 +7,11 @@
     <p class="user-info">Email: {{ user.email }}</p>
     <p class="user-info">Date Joined: {{ new Date(user.date_joined).toLocaleString() }}</p>
   </div>
+  <div class="edit-btn">
+    <router-link :to="`/edit/${user.id}`">
+      <button>Редагувати</button>
+    </router-link>
+</div>
 </template>
 
 <script>

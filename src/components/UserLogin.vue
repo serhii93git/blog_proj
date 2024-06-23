@@ -52,7 +52,7 @@ export default {
     logout() {
       AuthService.logout();
       this.currentUser = null;
-      this.$router.push('/');  // Перенаправлення після виходу
+      this.$router.push('/login');  // Перенаправлення після виходу
     }
   },
   created() {
