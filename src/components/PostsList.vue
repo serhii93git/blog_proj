@@ -10,17 +10,17 @@
       Реєструватись можна будь яким імям та електронкою (верифікації поки немає).
       <br>
       Якщо пости не відображаються, можливо треба трохи зачекати (сервер безоплатний, тому повільний)
-
     </h6>
-    
+
     <div class="user-posts" v-for="post in posts" :key="post.id">
-      <h2>
-        {{ post.title }}
-      </h2>   
-         
+      <h2>{{ post.title }}</h2>
       <div class="content">
-        <div class="image" v-if="post.media">
-          <img :src="post.media" class="post-media" alt="Зображення">
+        <div class="media" v-if="post.media">
+          <video class="post-video" v-if="isVideo(post.media)" controls>
+            <source :src="post.media" type="video/mp4">
+            Ваш браузер не підтримує відтворення відео.
+          </video>
+          <img v-else :src="post.media" class="post-media" alt="Зображення">
         </div>
         <div class="text">
           <div v-html="getTruncatedText(post)"></div>
@@ -89,6 +89,10 @@ export default {
       return post.isExpanded ? 'Згорнути' : 'Читати далі';
     };
 
+    const isVideo = (url) => {
+      return url.match(/\.(mp4|webm|ogg)$/i);
+    };
+
     fetchPosts();
 
     return {
@@ -97,7 +101,8 @@ export default {
       toggleExpand,
       getTruncatedText,
       showReadMoreButton,
-      getButtonText
+      getButtonText,
+      isVideo
     };
   }
 };

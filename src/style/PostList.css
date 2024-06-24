@@ -68,6 +68,15 @@ h2 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.post-video {
+  display: flex;
+  max-width: 400px;
+  max-height: 400px;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .post-time {
   font-style: italic;
   color: #777;
