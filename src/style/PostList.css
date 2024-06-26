@@ -9,6 +9,7 @@
 
 .creator-image {
   display: block;
+  justify-content: baseline;
   max-width: 200px;
   margin: 0 auto 20px;
   border-radius: 50%;
@@ -100,4 +101,13 @@ h2 {
   margin: 10px 0;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.footer {
+  font-style: italic;
+  color: #777;
+  font-size: 14px;
+  display: block;
+  max-width: 800px;
+  margin: 20px auto;
+  text-align: center;
 }
