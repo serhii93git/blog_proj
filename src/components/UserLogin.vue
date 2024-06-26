@@ -1,11 +1,12 @@
 <template>
   <div>
     <div v-if="isAuthenticated" class="user-info">
-      <p>Логінований як: {{ currentUser }}</p>
+      
       <button @click="logout" class="logout-button">Вийти</button>
     </div>
     <div v-else>
-      <h2>Логін</h2>
+      <h2 class="h2">Авторизуйтесь</h2>
+      
       <form @submit.prevent="login" class="login-form">
         <div class="form-group">
           <label for="username">Користувач:</label>
@@ -42,7 +43,7 @@ export default {
       AuthService.login({ username: this.username, password: this.password })
         .then(user => {
           this.currentUser = user;
-          this.$router.push('/');  // Перенаправлення після успішного входу
+          window.location.href = '/profile';  // Повне оновлення сторінки після успішного входу
         })
         .catch(error => {
           console.error('Помилка авторизації:', error);
@@ -52,7 +53,7 @@ export default {
     logout() {
       AuthService.logout();
       this.currentUser = null;
-      this.$router.push('/login');  // Перенаправлення після виходу
+      window.location.reload();  // Повне оновлення сторінки після виходу
     }
   },
   created() {
@@ -91,6 +92,11 @@ export default {
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+.h2 {
+  max-width: 400px;
+  margin: 25px auto;
+  
 }
 
 .submit-button {

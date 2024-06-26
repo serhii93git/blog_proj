@@ -1,20 +1,56 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Main page</router-link>
-      <router-link :to="`/add/`">Add post</router-link>
-      <router-link :to="`/profile/`">Author Profile</router-link>
-      <router-link :to="`/upost/`">Author Posts</router-link>
-      <router-link :to="`/login/`">Login</router-link>
-      <router-link :to="`/register/`">Register</router-link>
+      <div class="main">
+        <router-link to="/">Головна сторінка</router-link>
+      </div>
+      <div class="main">
+      <router-link v-if="isAuthenticated" :to="`/add/`">Додати пост</router-link>
+      </div>
+      <div class="main">
+      <router-link v-if="isAuthenticated" :to="`/profile/`">Твій профіль</router-link>
+      </div>
+      <div class="main">
+      <router-link v-if="isAuthenticated" :to="`/upost/`">Твої пости</router-link>
+      </div>
+      <div class="main">
+        <div v-if="!isAuthenticated" class="auth-links">
+          <router-link :to="`/login/`">Авторизуйся</router-link>
+          <router-link :to="`/register/`">Зареєструйся</router-link>
+        </div>
+      </div>
+      <div class="main">
+        <button v-if="isAuthenticated" @click="logout">Вихід</button>
+      </div>
+      
     </nav>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import AuthService from '../src/services/AuthService'; // імпортуємо AuthService
+
 export default {  
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      isAuthenticated: false
+    };
+  },
+  created() {
+    this.checkAuthentication();
+  },
+  methods: {
+    checkAuthentication() {
+      this.isAuthenticated = AuthService.isAuthenticated();
+    },
+    logout() {
+      AuthService.logout();
+      this.isAuthenticated = false;
+      window.location.href = '/login'; 
+    }
+  }
 };
 </script>
 
@@ -37,7 +73,7 @@ nav {
   max-width: 800px;
 }
 
-nav a {
+nav a, nav button {
   color: #333;
   text-decoration: none;
   font-size: 18px;
@@ -46,9 +82,11 @@ nav a {
   border-radius: 10px;
   transition: transform 0.3s, background-color 0.3s, color 0.3s;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: none; 
+  cursor: pointer; 
 }
 
-nav a:hover {
+nav a:hover, nav button:hover {
   background-color: #007bff;
   color: #fff;
   transform: translateY(-5px);
@@ -59,12 +97,25 @@ nav a.router-link-exact-active {
   color: #fff;
 }
 
+.main {
+  display: flex;
+  justify-content: space-around; /* Вирівнює по центру всередині батьківського контейнера */
+  align-items: center; /* Вирівнює елементи по вертикалі по центру */
+  
+}
+
+.auth-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 @media (max-width: 768px) {
   nav {
     flex-direction: column;
   }
   
-  nav a {
+  nav a, nav button {
     margin-bottom: 10px;
     text-align: center;
   }
