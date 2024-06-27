@@ -1,5 +1,11 @@
 <template>
-  <div class="user-profile">
+  <div v-if="loading">
+    <p>Завантаження профілю...</p>
+  </div>
+  <div v-else-if="error">
+    <p>{{ error }}</p>
+  </div>
+  <div v-else class="user-profile">
     <div class="profile-header">
       <img v-if="user.creator_image" :src="user.creator_image" alt="Creator Image" class="creator-image" />
       <h1>{{ user.username }}</h1>
@@ -19,38 +25,22 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { useUserStore } from '../store';
+import { computed, onMounted } from 'vue';
 
 export default {
-  data() {
+  setup() {
+    const userStore = useUserStore();
+
+    onMounted(() => {
+      userStore.fetchUser();
+    });
+
     return {
-      user: {
-        username: '',
-        first_name: '',
-        last_name: '',
-        email: '',
-        date_joined: '',
-        creator_image: ''
-      }
+      user: computed(() => userStore.user),
+      loading: computed(() => userStore.loading),
+      error: computed(() => userStore.error)
     };
-  },
-  mounted() {
-    this.fetchUserData();
-  },
-  methods: {
-    async fetchUserData() {
-      try {
-        const response = await axios.get('http://34.228.31.75:8000/api/creator/');
-        console.log(response.data); // Логування для перевірки даних
-        if (Array.isArray(response.data) && response.data.length > 0) {
-          this.user = response.data[0];
-        } else {
-          console.error('No user data found');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
   }
 };
 </script>

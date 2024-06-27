@@ -1,5 +1,5 @@
 <template>
-  <div class="user-posts" v-if="post.title">
+  <div v-if="post.title">
     <h1>{{ post.title }}</h1>
     <div class="content">
       <div class="media" v-if="post.media">
@@ -19,7 +19,8 @@
         <p>Створено {{ new Date(post.time_create).toLocaleString('en-US', { hour12: false }) }}</p>
         <p v-if="post.time_create !== post.time_update">Редаговано {{ new Date(post.time_update).toLocaleString('en-US', { hour12: false }) }}</p>
       </div>
-      <div class="buttons" v-if="isAuthor(post.author)">
+      <div>{{ post.author.username }}</div>
+      <div class="buttons" v-if="user.username === post.author">
         <router-link :to="`/update/${post.id}`">
           <button>Редагувати</button>
         </router-link>
@@ -27,7 +28,6 @@
       </div>
     </div>
   </div>
-  
   <div v-else>
     <p>Завантаження деталей поста...</p>
   </div>
@@ -36,7 +36,7 @@
 <script>
 import { reactive, onMounted } from 'vue';
 import axios from '@/axios';
-import AuthService from '../services/AuthService';
+import { useUserStore } from '../store';
 
 export default {
   name: 'PostDetail',
@@ -44,12 +44,11 @@ export default {
     id: {
       type: String,
       required: true
-    },
-    
+    }
   },
   setup(props, { emit }) {
+    const userStore = useUserStore();
     const post = reactive({});
-    const currentUser = AuthService.getCurrentUser();
 
     const fetchPost = async () => {
       try {
@@ -72,12 +71,9 @@ export default {
     };
 
     const isImage = (media) => /\.(jpeg|jpg|gif|png|webp)$/i.test(media);
-    
     const isVideo = (media) => /\.(mp4|webm|ogg)$/i.test(media);
 
-    const isAuthor = (author) => {
-      return currentUser && currentUser.username === author.username;
-    };
+    
 
     onMounted(fetchPost);
 
@@ -86,7 +82,8 @@ export default {
       deletePost,
       isImage,
       isVideo,
-      isAuthor
+      
+      user: userStore.user
     };
   }
 };

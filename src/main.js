@@ -1,11 +1,15 @@
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import App from './App.vue';
-import router from './router'; // Імпортуємо роутер
+import router from './router';
+import { useUserStore } from './store';  // Імпортуйте ваш store тут
 
 const app = createApp(App);
-app.use(router); // Використовуємо роутер
-app.mount('#app');
+const pinia = createPinia();
 
-
-
-
+const userStore = useUserStore(pinia);
+userStore.fetchUser().then(() => {
+  app.use(pinia);
+  app.use(router);
+  app.mount('#app');
+});
