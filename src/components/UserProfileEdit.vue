@@ -91,6 +91,7 @@ export default {
           }
         });
         console.log('User data updated:', response.data);
+        window.location.href = '/profile';
       } catch (error) {
         console.error('Error updating data:', error);
       }
@@ -105,7 +106,7 @@ export default {
         console.log('User data deleted');
         AuthService.logout();
         // Optionally, redirect to another page after deletion
-        this.$router.push('/register');
+        window.location.href = '/';
       } catch (error) {
         console.error('Error deleting data:', error);
       }
