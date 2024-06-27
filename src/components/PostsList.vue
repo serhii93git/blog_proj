@@ -10,11 +10,13 @@
         </h2>
       <div class="content">
         <div class="media" v-if="post.media">
-          <video class="post-video" v-if="isVideo(post.media)" controls>
+          <router-link :to="`/post/${post.id}`" v-if="!isVideo(post.media)">
+            <img v-if="!isVideo(post.media)" :src="post.media" class="post-media" alt="Зображення">
+          </router-link>
+          <video class="post-video" v-else-if="isVideo(post.media)" controls>
             <source :src="post.media" type="video/mp4">
             Ваш браузер не підтримує відтворення відео.
           </video>
-          <img v-else :src="post.media" class="post-media" alt="Зображення">
         </div>
         <div class="text">
           <div v-html="getTruncatedText(post)"></div>
@@ -109,6 +111,7 @@ export default {
       showReadMoreButton,
       getButtonText,
       isVideo
+     
     };
   }
 };
