@@ -18,16 +18,18 @@
       <div class="author">
         <p>Автор: <em>{{ post.author }}</em></p>
       </div>
-      <div class="time">
-        <p>Час створення: {{ new Date(post.time_create).toLocaleString() }}</p>
-        <p>Час оновлення: {{ new Date(post.time_update).toLocaleString() }}</p>
+      <div class="end">
+        <div class="time">
+          <p>Створено {{ new Date(post.time_create).toLocaleString('en-US', { hour12: false }) }}</p>
+          <p v-if="post.time_create !== post.time_update">Редаговано {{ new Date(post.time_update).toLocaleString('en-US', { hour12: false }) }}</p>
+        </div>
+        <div class="buttons">
+          <router-link :to="`/update/${post.id}`">
+            <button>Редагувати</button>
+          </router-link>
+          <button @click="deletePost">Видалити пост</button>
+        </div>
       </div>
-      <div>
-      <router-link :to="`/update/${post.id}`">
-        <button>Редагувати</button>
-      </router-link>
-      </div>
-      <button @click="deletePost">Видалити пост</button>
     </div>
   </div>
   
@@ -111,7 +113,7 @@ export default {
   margin-bottom: 10px;
 }
 
-.post-time {
+.time {
   font-style: italic;
   color: #777;
 }
@@ -136,6 +138,28 @@ export default {
 
 .meta {
   margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta .time {
+  display: flex;
+  flex-direction:column-reverse;
+  align-items: flex-start;
+  margin: 0px;
+  padding: 0px;
+}
+
+.meta .buttons {
+  display: flex;
+  flex-direction:row-reverse;
+  align-items: flex-start;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
 }
 
 button {
@@ -144,6 +168,7 @@ button {
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
+  margin: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }

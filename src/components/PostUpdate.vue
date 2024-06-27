@@ -11,9 +11,7 @@
       <label for="media">Медіафайл:</label>
       <input type="file" id="media" @change="handleFileChange" accept="image/*" class="input-field">
       
-      <label for="author">Автор:</label>
-      <input type="text" id="author" v-model="post.author" required class="input-field">
-      
+          
       <button type="submit" class="submit-button">Оновити пост</button>
       <button @click="cancelEdit" class="cancel-button">Скасувати</button>
     </form>
@@ -33,8 +31,8 @@ export default {
       post: {
         title: '',
         text: '',
-        media: null,
-        author: ''
+        media: null
+        
       },
       originalPost: null // для перевірки змін
     };
@@ -81,7 +79,7 @@ export default {
       const formData = new FormData();
       formData.append('title', this.post.title);
       formData.append('text', this.quill.root.innerHTML); // Оновлюємо текст з Quill редактора
-      formData.append('author', this.post.author);
+      
 
       if (this.post.media && (this.originalPost === null || this.post.media !== this.originalPost.media)) {
         formData.append('media', this.post.media);
