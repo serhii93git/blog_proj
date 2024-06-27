@@ -1,13 +1,13 @@
 <template>
-  <div v-if="post.title">
+  <div class="user-posts" v-if="post.title">
     <h1>{{ post.title }}</h1>
     <div class="content">
       <div class="media" v-if="post.media">
         <template v-if="isImage(post.media)">
-          <img :src="post.media" style="max-width: 300px;" alt="Зображення">
+          <img :src="post.media" class="post-media" alt="Зображення">
         </template>
         <template v-else-if="isVideo(post.media)">
-          <video :src="post.media" style="max-width: 300px;" controls></video>
+          <video :src="post.media" class="post-media" controls></video>
         </template>
       </div>
       <div class="text">
@@ -15,20 +15,15 @@
       </div>
     </div>
     <div class="meta">
-      <div class="author">
-        <p>Автор: <em>{{ post.author }}</em></p>
+      <div class="time">
+        <p>Створено {{ new Date(post.time_create).toLocaleString('en-US', { hour12: false }) }}</p>
+        <p v-if="post.time_create !== post.time_update">Редаговано {{ new Date(post.time_update).toLocaleString('en-US', { hour12: false }) }}</p>
       </div>
-      <div class="end">
-        <div class="time">
-          <p>Створено {{ new Date(post.time_create).toLocaleString('en-US', { hour12: false }) }}</p>
-          <p v-if="post.time_create !== post.time_update">Редаговано {{ new Date(post.time_update).toLocaleString('en-US', { hour12: false }) }}</p>
-        </div>
-        <div class="buttons">
-          <router-link :to="`/update/${post.id}`">
-            <button>Редагувати</button>
-          </router-link>
-          <button @click="deletePost">Видалити пост</button>
-        </div>
+      <div class="buttons">
+        <router-link :to="`/update/${post.id}`">
+          <button>Редагувати</button>
+        </router-link>
+        <button @click="deletePost">Видалити пост</button>
       </div>
     </div>
   </div>
@@ -96,65 +91,56 @@ export default {
 <style scoped>
 .user-posts {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.creator-image {
-  max-width: 200px;
+h1 {
+  font-size: 24px;
   margin-bottom: 20px;
-}
-
-.post-item {
-  margin-bottom: 40px;
-}
-
-.post-media {
-  max-width: 300px;
-  margin-bottom: 10px;
-}
-
-.time {
-  font-style: italic;
-  color: #777;
+  color: #333;
 }
 
 .content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.media {
+  margin-right: 20px;
+}
+
+.post-media {
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .text {
   flex: 1;
-}
-
-.image, .media {
-  margin-right: 20px;
-}
-
-.text p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 15px;
   word-wrap: break-word;
   white-space: pre-wrap;
 }
 
 .meta {
-  margin-top: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
 }
 
-.meta .time {
-  display: flex;
-  flex-direction:column-reverse;
-  align-items: flex-start;
-  margin: 0px;
-  padding: 0px;
-}
-
-.meta .buttons {
-  display: flex;
-  flex-direction:row-reverse;
-  align-items: flex-start;
+.time {
+  font-style: italic;
+  color: #777;
+  font-size: 14px;
 }
 
 .buttons {
@@ -168,7 +154,6 @@ button {
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
-  margin: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
