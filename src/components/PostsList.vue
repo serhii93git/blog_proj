@@ -3,7 +3,11 @@
     
 
     <div class="user-posts" v-for="post in posts" :key="post.id">
-      <h2>{{ post.title }}</h2>
+      <h2>
+          <router-link :to="`/post/${post.id}`">
+            {{ post.title }}
+          </router-link>
+        </h2>
       <div class="content">
         <div class="media" v-if="post.media">
           <video class="post-video" v-if="isVideo(post.media)" controls>

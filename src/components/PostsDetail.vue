@@ -19,7 +19,7 @@
         <p>Створено {{ new Date(post.time_create).toLocaleString('en-US', { hour12: false }) }}</p>
         <p v-if="post.time_create !== post.time_update">Редаговано {{ new Date(post.time_update).toLocaleString('en-US', { hour12: false }) }}</p>
       </div>
-      <div class="buttons">
+      <div class="buttons" v-if="isAuthor(post.author)">
         <router-link :to="`/update/${post.id}`">
           <button>Редагувати</button>
         </router-link>
@@ -36,6 +36,7 @@
 <script>
 import { reactive, onMounted } from 'vue';
 import axios from '@/axios';
+import AuthService from '../services/AuthService';
 
 export default {
   name: 'PostDetail',
@@ -44,45 +45,48 @@ export default {
       type: String,
       required: true
     },
+    
   },
   setup(props, { emit }) {
     const post = reactive({});
+    const currentUser = AuthService.getCurrentUser();
 
     const fetchPost = async () => {
       try {
         const response = await axios.get(`posts/${props.id}/`);
         Object.assign(post, response.data);
       } catch (error) {
-        console.error('Помилка отримання даних:', error);
+        console.error('Error fetching post data:', error);
       }
     };
 
     const deletePost = async () => {
       try {
         await axios.delete(`posts/${props.id}/`);
-        console.log('Пост видалено!');
+        console.log('Post deleted!');
         emit('postDeleted');
-        this.$router.push('/'); 
+        this.$router.push('/');
       } catch (error) {
-        console.error('Помилка видалення поста:', error);
+        console.error('Error deleting post:', error);
       }
     };
 
+    const isImage = (media) => /\.(jpeg|jpg|gif|png|webp)$/i.test(media);
+    
+    const isVideo = (media) => /\.(mp4|webm|ogg)$/i.test(media);
+
+    const isAuthor = (author) => {
+      return currentUser && currentUser.username === author.username;
+    };
+
     onMounted(fetchPost);
-
-    const isImage = (media) => {
-      return /\.(jpeg|jpg|gif|png|webp)$/i.test(media);
-    };
-
-    const isVideo = (media) => {
-      return /\.(mp4|webm|ogg)$/i.test(media);
-    };
 
     return {
       post,
       deletePost,
       isImage,
-      isVideo
+      isVideo,
+      isAuthor
     };
   }
 };
